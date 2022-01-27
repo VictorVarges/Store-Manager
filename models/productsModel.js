@@ -10,6 +10,13 @@ const getAll = async () => {
     }
 };
 
+const getProductsId = async (id) => {
+    const [query] = await connection.execute('SELECT * FROM products WHERE id=?', [id]);
+    if (query.length === 0) return null;
+    
+    return query[0];
+};
+
 const searchProducts = async ({ name }) => {
   if (!name) return false;
   try {
@@ -23,15 +30,12 @@ const searchProducts = async ({ name }) => {
 };
 
 const createProducts = async ({ name, quantity }) => {
-  console.log({ name, quantity });
   if (!name || !quantity) return false;
   try {
     // const [query] = await connection.execute('INSERT INTO products (name, quantity) VALUES (?, ?)',
     // [name, quantity]);
-    console.log('vou gravar o db');
     const query = 'INSERT INTO products (name, quantity) VALUES (?,?)';
     const [rows] = await connection.execute(query, [name, quantity]);
-    console.log({ rows });
     return {
       id: rows.insertId,
       name,
@@ -46,4 +50,5 @@ module.exports = {
   createProducts,
   searchProducts,
   getAll,
+  getProductsId,
 };

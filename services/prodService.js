@@ -1,4 +1,4 @@
-const { createProducts, getAll } = require('../models/productsModel');
+const { createProducts, getAll, getProductsId } = require('../models/productsModel');
 
 const productsNameValidate = async (name) => {
   const productsDb = await getAll();
@@ -15,7 +15,6 @@ const productsNameValidate = async (name) => {
 };
 
 const productsQuantityValidate = (quantity) => {
-  console.log({ quantity });
   if (quantity === undefined) {
     return {
         code: 400,
@@ -24,8 +23,8 @@ const productsQuantityValidate = (quantity) => {
   }
   if (typeof quantity === 'string' || quantity < 1) {
     return {
-        code: 422,
-        message: '"quantity" must be a number larger than or equal to 1',
+      code: 422,
+      message: '"quantity" must be a number larger than or equal to 1',
     };
   }
 };
@@ -33,20 +32,31 @@ const productsQuantityValidate = (quantity) => {
 const productsValidate = async (name, quantity) => {
   const invokeName = await productsNameValidate(name);
   const invokeQuantity = productsQuantityValidate(quantity);
-  console.log({ invokeName: invokeName === true, invokeQuantity });
   if (invokeQuantity) {
     return invokeQuantity;
   }
   if (invokeName) {
-    console.log('cai no invokeName');
     return invokeName;
   }
-  console.log('passei nos testes');
   const insertInDB = await createProducts({ name, quantity });
-  console.log({ insertInDB });
     return insertInDB;
+};
+
+const getProductsValidate = async () => {
+  const productsInDb = await getAll();
+
+  return productsInDb; 
+};
+
+const getProductsIdValidate = async (id) => {
+  const productsInDb = await getProductsId(id);
+  if (productsInDb === null) return { code: 404, message: 'Product not found' };
+
+  return productsInDb; 
 };
 
 module.exports = {
   productsValidate,
+  getProductsValidate,
+  getProductsIdValidate,
 };
