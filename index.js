@@ -1,12 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-require('dotenv').config();
-
 const productsController = require('./controllers/productsControllers');
-
-const PORT = process.env.PORT || 3000;
-// const HOST = process.env.HOST || '/';
 
 const app = express();
 app.use(bodyParser.json());
@@ -20,6 +15,6 @@ app.post('/products', productsController.createProducts);
 
 // app.use(HOST, app);
 
-app.listen(PORT, () => {
+app.listen(process.env.PORT, () => {
   console.log(`Escutando na porta ${process.env.PORT}`);
 });
