@@ -1,8 +1,7 @@
-const { createProducts,
-   getAll, getProductsId, updateProducts } = require('../models/productsModel');
+const productsModel = require('../models/productsModel');
 
 const productsNameValidate = async (name) => {
-  const listProductsDb = await getAll();
+  const listProductsDb = await productsModel.getAll();
   const nameAlreadyExists = listProductsDb.some((product) => product.name === name); 
   
   if (!name) return { code: 400, message: '"name" is required' }; 
@@ -39,26 +38,25 @@ const productsValidate = async (name, quantity) => {
   if (invokeName) {
     return invokeName;
   }
-  const insertInDB = await createProducts({ name, quantity });
+  const insertInDB = await productsModel.createProducts({ name, quantity });
     return insertInDB;
 };
 
 const getProductsValidate = async () => {
-  const productsInDb = await getAll();
+  const productsInDb = await productsModel.getAll();
 
   return productsInDb; 
 };
 
 const getProductsIdValidate = async (id) => {
-  const productsInDb = await getProductsId(id);
+  const productsInDb = await productsModel.getProductsId(id);
   if (productsInDb === null) return { code: 404, message: 'Product not found' };
 
   return productsInDb; 
 };
 
 const updateValidate = async ({ name, quantity, id }) => {
-  const productsInDb = await getProductsId(id);
-  console.log({ productsInDb });
+  const productsInDb = await productsModel.getProductsId(id);
 
   if (!productsInDb) return { code: 404, message: 'Product not found' };
   
@@ -73,9 +71,18 @@ const updateValidate = async ({ name, quantity, id }) => {
       message: '"quantity" must be a number larger than or equal to 1',
     };
   }
-      const updateInDb = await updateProducts({ name, quantity, id });
+      const updateInDb = await productsModel.updateProducts({ name, quantity, id });
 
   return updateInDb;
+};
+
+const deleteValidate = async (id) => {
+  const productsInDb = await productsModel.getProductsId(id);
+
+  if (!productsInDb) return { code: 404, message: 'Product not found' };
+
+  await productsModel.deleteProductsId(id);
+  return productsInDb;
 };
 
 module.exports = {
@@ -83,4 +90,5 @@ module.exports = {
   getProductsValidate,
   getProductsIdValidate,
   updateValidate,
+  deleteValidate,
 };

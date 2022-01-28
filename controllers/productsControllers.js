@@ -42,9 +42,23 @@ const updateProducts = async (req, res) => {
   }
   return res.status(MESS_SUCCESS).json(responseProducts);
 };
+
+const deleteProducts = async (req, res) => {
+  const { id } = req.params;
+
+  const responseProducts = await prodService.deleteValidate(id);
+  console.log({ responseProducts });
+
+  if (responseProducts.code) {
+    return res.status(responseProducts.code).json({ message: responseProducts.message });
+  }
+  return res.status(MESS_SUCCESS).json(responseProducts);
+};
+
 module.exports = {
   createProducts,
   getProducts,
   getProductsId,
   updateProducts,
+  deleteProducts,
 };
