@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const productsController = require('./controllers/productsControllers');
+const salesController = require('./controllers/salesControllers');
 
 const app = express();
 app.use(bodyParser.json());
@@ -16,6 +17,8 @@ app.get('/products', productsController.getProducts);
 app.get('/products/:id', productsController.getProductsId);
 app.put('/products/:id', productsController.updateProducts);
 app.delete('/products/:id', productsController.deleteProducts);
+
+app.post('/sales', salesController.createSales);
 
 // app.use(HOST, app);
 

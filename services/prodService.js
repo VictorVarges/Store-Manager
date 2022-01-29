@@ -1,7 +1,7 @@
 const productsModel = require('../models/productsModel');
 
 const productsNameValidate = async (name) => {
-  const listProductsDb = await productsModel.getAll();
+  const listProductsDb = await productsModel.getAllProducts();
   const nameAlreadyExists = listProductsDb.some((product) => product.name === name); 
   
   if (!name) return { code: 400, message: '"name" is required' }; 
@@ -43,7 +43,7 @@ const productsValidate = async (name, quantity) => {
 };
 
 const getProductsValidate = async () => {
-  const productsInDb = await productsModel.getAll();
+  const productsInDb = await productsModel.getAllProducts();
 
   return productsInDb; 
 };

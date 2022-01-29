@@ -15,7 +15,7 @@ const createProducts = async ({ name, quantity }) => {
   }
 };
 
-const getAll = async () => {
+const getAllProducts = async () => {
   try {
       const [query] = await connection.execute('SELECT * FROM products');
     
@@ -57,22 +57,9 @@ const deleteProductsId = async (id) => {
   }
 };
 
-const searchProducts = async ({ name }) => {
-  if (!name) return false;
-  try {
-    const [query] = await connection
-    .execute('SELECT name FROM StoreManager.products WHERE name = ?', [name]);
-
-    return query[0];
-  } catch (err) {
-    return err;
-  }
-};
-
 module.exports = {
   createProducts,
-  searchProducts,
-  getAll,
+  getAllProducts,
   getProductsId,
   updateProducts,
   deleteProductsId,

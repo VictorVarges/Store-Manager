@@ -4,8 +4,6 @@ const MESS_SUCCESS = 200;
 
 const createProducts = async (req, res) => {
   const { name, quantity } = req.body;
-  // const { code, message } = serviceController.productsValidate;
-
   const responseProducts = await prodService.productsValidate(name, quantity);
 
   if (responseProducts.code) {
@@ -34,7 +32,6 @@ const getProductsId = async (req, res) => {
 const updateProducts = async (req, res) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
-
   const responseProducts = await prodService.updateValidate({ name, quantity, id });
 
   if (responseProducts.code) {
@@ -45,9 +42,7 @@ const updateProducts = async (req, res) => {
 
 const deleteProducts = async (req, res) => {
   const { id } = req.params;
-
   const responseProducts = await prodService.deleteValidate(id);
-  console.log({ responseProducts });
 
   if (responseProducts.code) {
     return res.status(responseProducts.code).json({ message: responseProducts.message });
