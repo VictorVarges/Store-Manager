@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 
 const productsController = require('./controllers/productsControllers');
 const salesController = require('./controllers/salesControllers');
+const { salesProductIdValidate, salesQuantityValidate } = require('./middlewares/salesValidate');
 
 const app = express();
 app.use(bodyParser.json());
@@ -18,7 +19,7 @@ app.get('/products/:id', productsController.getProductsId);
 app.put('/products/:id', productsController.updateProducts);
 app.delete('/products/:id', productsController.deleteProducts);
 
-app.post('/sales', salesController.createSales);
+app.post('/sales', salesProductIdValidate, salesQuantityValidate, salesController.createSales);
 app.get('/sales', salesController.getAllSales);
 app.get('/sales/:id', salesController.getIdSales);
 
