@@ -5,6 +5,7 @@ const salesProductIdValidate = (productId) => {
 };
 
 const salesQuantityValidate = (quantity) => {
+  console.log('quantity', quantity);
   if (quantity === undefined) return { code: 400, message: '"quantity" is required' };
  
   if (quantity < 1 || typeof quantity !== 'number') { 
@@ -19,11 +20,27 @@ const salesValidate = async (productId, quantity) => {
   if (invokeProductId) return invokeProductId;
   if (invokeQuantity) return invokeQuantity;
   const { id } = await salesModel.getSalesId(new Date());
+
   const salesCreated = await salesModel.createSalesRecord({ id, productId, quantity });
 
   return salesCreated;
 };
 
+const salesIdValidate = async (id) => {
+  const salesIdInDb = await salesModel.getIdSales(id);
+  console.log('salesIdValidate - service', { salesIdInDb });
+  if (salesIdInDb.length === 0) return { code: 404, message: 'Sale not found' };
+  return salesIdInDb; 
+};
+
+const allSalesValidate = async () => {
+  const salesInDb = await salesModel.getAllSales();
+  // console.log('allSalesValidate - service', salesInDb);
+  return salesInDb;
+};
+
 module.exports = {
   salesValidate,
+  salesIdValidate,
+  allSalesValidate,
 };

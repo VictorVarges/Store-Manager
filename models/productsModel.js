@@ -11,7 +11,7 @@ const createProducts = async ({ name, quantity }) => {
       quantity,
     };
   } catch (err) {
-    return err;
+    return err.message;
   }
 };
 
@@ -21,7 +21,7 @@ const getAllProducts = async () => {
     
       return query;
     } catch (err) {
-      return err;
+      return err.message;
     }
 };
 
@@ -31,7 +31,7 @@ const getProductsId = async (id) => {
     if (query.length === 0) return null;
     return query[0];
   } catch (err) {
-    return err;
+    return err.message;
   }
 };
 
@@ -53,7 +53,7 @@ const deleteProductsId = async (id) => {
     if (query.length === 0) return null;
     return query;
   } catch (err) {
-    return err;
+    return err.message;
   }
 };
 

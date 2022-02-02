@@ -19,8 +19,8 @@ app.put('/products/:id', productsController.updateProducts);
 app.delete('/products/:id', productsController.deleteProducts);
 
 app.post('/sales', salesController.createSales);
-
-// app.use(HOST, app);
+app.get('/sales', salesController.getAllSales);
+app.get('/sales/:id', salesController.getIdSales);
 
 app.listen(process.env.PORT, () => {
   console.log(`Escutando na porta ${process.env.PORT}`);
